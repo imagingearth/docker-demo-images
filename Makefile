@@ -9,17 +9,17 @@ update-tag:
 	./update-dockerfile-includes $(TAG)
 
 build:
-	docker build -t jupyter/demo .
+	docker build -t jgomezdans/demo .
 
 dev: ARGS?=
 dev:
-	docker run --rm -it -p 8889:8888 jupyter/demo $(ARGS)
+	docker run --rm -it -p 80:8888 jgomezdans/demo $(ARGS)
 
 upload:
-	docker push jupyter/demo
+	docker push jgomezdans/demo
 
 super-nuke: nuke
-	-docker rmi jupyter/demo
+	-docker rmi jgomezdans/demo
 
 # Cleanup with fangs
 nuke:
