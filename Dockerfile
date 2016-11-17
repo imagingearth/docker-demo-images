@@ -27,16 +27,12 @@ USER $NB_USER
 RUN pip install --user --no-cache-dir bash_kernel && \
     python -m bash_kernel.install
 
-# Clone featured notebooks before adding local content to avoid recloning
 # everytime something changes locally
-#RUN git clone --depth=1 https://github.com/jgomezdans/two_stream.git /home/$NB_USER/work/
-RUN wget https://github.com/jgomezdans/two_stream/archive/master.zip \
-  && unzip master.zip
 
 # Add local content, starting with notebooks and datasets which are the largest
 # so that later, smaller file changes do not cause a complete recopy during 
 # build
-#COPY notebooks/ /home/$NB_USER/work/
+COPY notebooks/two_stream/ /home/$NB_USER/work/
 #COPY datasets/ /home/$NB_USER/work/datasets/
 
 # Switch back to root for permission fixes, conversions, and trust. Make sure
