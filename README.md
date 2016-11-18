@@ -1,6 +1,23 @@
 Docker Demo Image
 =================
 
+## My notes for deploying this as part of a tmpnb server
+
+I forked this repository because I wanted to have a conda 2.7 environment served through `tmpnb`. I probably went down the route of lots of bumps and turns in the road, but it's apparently working well. This repository creates a docker image called `jgomezdans/demo` which is in itself derived from my other `jgomezdans/scipy-notebook` image. The notebook image installs gdal and a number of other things in a python 2.7 environment. I did that on the interactive prompt, so it's reproducibility value is *ahem* limited, but it should possible to move it to some docker file in the future (it's broadly based on the `jupyter/scipy-notebook` image).
+
+The following commands install and get the `tmpnb` server running. Note that the `orchestrate.py` command can get a lot of different options (e.g. to do with culling notebooks and what not). Currently using defaults, but these might be too limited or too generous.
+
+
+
+    export TOKEN=$( head -c 30 /dev/urandom | xxd -p )
+    docker run --net=host -d -e CONFIGPROXY_AUTH_TOKEN=$TOKEN --name=proxy \
+        jupyter/configurable-http-proxy --default-target http://127.0.0.1:9999
+    docker run --net=host -d -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
+        -v /var/run/docker.sock:/docker.sock jupyter/tmpnb \
+        python orchestrate.py --image='jgomezdans/demo' \
+        --command="jupyter notebook --NotebookApp.base_url={base_path} --ip=0.0.0.0 --port {port}"
+
+
 [![Join the chat at https://gitter.im/jupyter/docker-demo-images](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jupyter/docker-demo-images?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Herein lies the Dockerfile for [`jupyter/demo`](https://registry.hub.docker.com/u/jupyter/demo/), the container image currently used by [tmpnb.org](https://tmpnb.org)). It inherits from [`jupyter/minimal-notebook`](https://registry.hub.docker.com/u/jupyter/minimal-notebook/), the base image defined in [`jupyter/docker-stacks`](https://github.com/jupyter/docker-stacks).
