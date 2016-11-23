@@ -34,7 +34,7 @@ RUN pip install --user --no-cache-dir bash_kernel && \
 # build
 COPY notebooks/two_stream/ /home/$NB_USER/work/
 #COPY datasets/ /home/$NB_USER/work/datasets/
-
+COPY notebooks/two_stream/helpers/matplotlibrc /home/$NB_USER/.config/matplotlib/
 # Switch back to root for permission fixes, conversions, and trust. Make sure
 # trust is done as $NB_USER so that the signing secret winds up in the $NB_USER
 # profile, not root's
