@@ -19,6 +19,7 @@ RUN apt-get install unzip wget
 
 # MAINTAINER Jupyter Project <jupyter@googlegroups.com>
 
+RUN rm -rf /home/$NB_USER/*
 
 USER $NB_USER
 
@@ -35,6 +36,7 @@ RUN pip install --user --no-cache-dir bash_kernel && \
 COPY notebooks/two_stream/ /home/$NB_USER/work/
 #COPY datasets/ /home/$NB_USER/work/datasets/
 COPY notebooks/two_stream/helpers/matplotlibrc /home/$NB_USER/.config/matplotlib/
+COPY notebooks/two_stream/helpers/matplotlibrc /home/$NB_USER/work/
 # Switch back to root for permission fixes, conversions, and trust. Make sure
 # trust is done as $NB_USER so that the signing secret winds up in the $NB_USER
 # profile, not root's
